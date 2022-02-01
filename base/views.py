@@ -1,17 +1,18 @@
 from multiprocessing import context
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Room
 
-rooms = [
-    {'id' : 1, 'name' : 'Lets Learn python'},
-    {'id' : 2, 'name' : 'Desing with me'},
-    {'id' : 3, 'name' : 'Frontend developers'}
-]
+
 
 # Create your views here.
 def home(request):
+    rooms = Room.objects.all()
     context = {'rooms' : rooms}
     return render(request, 'base/home.html', context)
 
-def room(request):
-    return render(request, 'base/room.html')
+def room(request, pk):
+    # Get room by id
+    room = Room.objects.get(pk=pk)
+    context = {'room' : room}
+    return render(request, 'base/room.html', context)
