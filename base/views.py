@@ -1,14 +1,28 @@
 from multiprocessing import context
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from .models import Room
+from django.db.models import Q
+from .models import Room, Topic
 from .forms import RoomForm
 
 
 # Create your views here.
 def home(request):
-    rooms = Room.objects.all()
-    context = {'rooms' : rooms}
+    # get the query params
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    
+    # get the rooms that match the query
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q)
+        )
+
+    topics = Topic.objects.all()
+    rooms_count = rooms.count()
+    context = {'rooms' : rooms,
+     'topics' : topics,
+     'rooms_count' : rooms_count}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
@@ -51,5 +65,5 @@ def delete_room(request, pk):
     if request.method == 'POST':
         room.delete()
         return redirect('home')
-    context = {'room': room}
-    return render(request, 'base/delete_room.html', context)
+    context = {'obj': room}
+    return render(request, 'base/delete.html', context)
