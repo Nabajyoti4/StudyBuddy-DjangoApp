@@ -1,12 +1,39 @@
-from multiprocessing import context
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
+from django.contrib import messages
 from .models import Room, Topic
 from .forms import RoomForm
 
 
 # Create your views here.
+def login_page(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, 'User Not found')
+        
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Invalid Credentials')
+            return redirect('login')
+        
+    return render(request, 'base/login_register.html')
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+
 def home(request):
     # get the query params
     q = request.GET.get('q') if request.GET.get('q') != None else ''
