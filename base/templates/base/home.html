@@ -30,13 +30,16 @@
         <h5>{{ rooms_count }} Rooms available</h5>
         {% for room in rooms %}
         <div>
-            <span>@{{ room.user.username }}</span>
+            {% if request.user == room.user %}
+            <a href="{% url 'update_room' room.id %}" >Update</a>
             <a href="{% url 'delete_room' room.id %}">DELETE</a>
+            {% endif %}
             <a href="{% url 'room' room.id %}">
                 <h2>{{ room.name }}</h2>
             </a>
+            <span>@{{ room.user.username }}</span>
             <p>{{ room.topic.name }}</p>
-            <a href="{% url 'update_room' room.id %}" >Update</a>
+    
         </div>
         {% endfor %}
     </div>
