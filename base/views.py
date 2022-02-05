@@ -167,3 +167,18 @@ def delete_comment(request, pk):
     room = message.room
     message.delete()
     return redirect('room', pk=room.pk)
+
+
+# User views
+def user_profile(request, pk):
+    user = User.objects.get(pk=pk)
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+    context = {
+        'user' : user,
+        'rooms' : rooms,
+        'room_messages' : room_messages,
+        'topics' : topics
+        }
+    return render(request, 'base/profile.html', context)

@@ -3,10 +3,9 @@
     {% for message in room_messages %}
     <hr>
     <div>
-        <span>{{ message.user }}</span>
+        <span><a href="{% url 'user_profile' message.user.id %}">{{ message.user }}</a> {{ message.created|timesince }}</span>
         <span>{{ message }}</span>
         <span>{{ message.room.name }}</span>
-        <span>{{ message.created|timesince }}</span>
         {% if request.user == message.user %}
         <a href="{% url 'delete_comment' message.id %}">Delete</a>
         {% endif %}

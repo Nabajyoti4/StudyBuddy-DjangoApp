@@ -12,4 +12,7 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('create-comment/', views.create_comment, name='create_comment'),
     path('delete-comment/<str:pk>/', views.delete_comment, name='delete_comment'),
+
+    # user urls
+    path('profile/<str:pk>/', views.user_profile, name='user_profile'),
 ]

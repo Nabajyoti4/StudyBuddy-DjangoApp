@@ -20,20 +20,7 @@
         <a href="{% url 'create_room' %}">Create Room</a>
         <div>
             <h5>{{ rooms_count }} Rooms available</h5>
-            {% for room in rooms %}
-            <div>
-                {% if request.user == room.user %}
-                <a href="{% url 'update_room' room.id %}" >Update</a>
-                <a href="{% url 'delete_room' room.id %}">DELETE</a>
-                {% endif %}
-                <a href="{% url 'room' room.id %}">
-                    <h2>{{ room.name }}</h2>
-                </a>
-                <span>@{{ room.user.username }}</span>
-                <p>{{ room.topic.name }}</p>
-        
-            </div>
-            {% endfor %}
+            {% include 'base/feed_component.html' %}
         </div>
     </div>
 
