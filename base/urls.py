@@ -16,4 +16,10 @@ urlpatterns = [
     # user urls
     path('profile/<str:pk>/', views.user_profile, name='user_profile'),
     path('update-user/', views.update_user, name='update_user'),
+
+    # topics
+    path('topics/', views.topics_page, name='topics_page'),
+
+    #activity
+    path('activity/', views.activity_page, name='activity_page'),
 ]
